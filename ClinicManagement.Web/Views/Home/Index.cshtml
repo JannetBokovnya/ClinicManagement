@@ -1,0 +1,291 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@*<style>
+    #chart_container {
+        width: 400px;
+        height: 400px;
+        border: 1px solid #ddd;
+        padding: 1px;
+        border-radius: 4px;
+    }
+</style>*@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Информация</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        @*<i class="fa fa-comments fa-5x"></i>*@
+                        <i class="fa fa-group fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge patients"></div>
+                        <div>Всего пациентов</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    @*<p class="count_bottom"><i class="green todayspatients"> </i> Added From Today</p>*@
+                    <span class="pull-right"><i class="green todayspatients"> </i>  Зарегистрировалось сегодня</span>
+                    @*<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>*@
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        @*<i class="fa fa-comments-o fa-5x"></i>*@
+                        <i class="fa fa-sort-amount-desc fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge appointments"></div>
+                        <div>Всего посетили докторов</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    @*<span class="pull-left">За сегодня</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>*@
+                    <span class="pull-right"><i class="green todaysappointments"> </i>  Записались на прием сегодня</span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user-md fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge doctors"></div>
+                        <div>Всего докторов</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    @*<span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>*@
+                    <span class="pull-right"><i class="green availabledoctors"> </i>  available докторов</span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-user fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge users"></div>
+                        <div>Всего Users</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    @*<span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>*@
+                    <span class="pull-right"><i class="green activeaccounts"> </i>  Active Accounts</span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-lg-6">
+        <div class="card card-chart">
+            <div class="card-header">
+                <h4 class="card-title">Количество пациентов у докторов</h4>
+            </div>
+            <div class="card-body">
+                <div id="chart_container">
+                    <canvas id="bar_chart" ></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="~/Scripts/Chart.js"></script>
+    @section scripts{
+        <script>
+        $(document).ready(function () {
+            //render total patient
+            $.get('../../Home/TotalPatients', null, function (data) {
+                $('.patients').append(data);
+            }, 'json');
+            //render todays patients
+            $.get('../../Home/TodaysPatients', null, function (data) {
+                $('.todayspatients').append(data);
+            }, 'json');
+            //render total apointments
+            $.get('../../Home/TotalAppointments', null, function (data) {
+                $('.appointments').append(data);
+            }, 'json');
+            //Today's appointments
+            $.get('../../Home/TodaysAppointments', null, function (data) {
+                $('.todaysappointments').append(data);
+            }, 'json');
+            //render total doctors
+            $.get('../../Home/TotalDoctors', null, function (data) {
+                $('.doctors').append(data);
+            }, 'json');
+            //render available doctors
+            $.get('../../Home/AvailableDoctors', null, function (data) {
+                $('.availabledoctors').append(data);
+            }, 'json');
+
+            //render total users
+            $.get('../../Home/TotalUsers', null, function (data) {
+                $('.users').append(data);
+            }, 'json');
+            //ActiveAccounts
+            $.get('../../Home/ActiveAccounts', null, function (data) {
+                $('.activeaccounts').append(data);
+            }, 'json');
+
+
+            $.getJSON('../../Home/DashboardChart',  function (data) {
+
+                var countmonth = []
+                var month = []
+                for (var i = 0; i < data.month.length; i++) {
+                    month.push(data.month[i])
+                }
+
+                for (var i = 0; i < data.countmonth.length; i++) {
+                    countmonth.push(data.countmonth[i])
+                }
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Количество посещений докторов по месяцам'
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: month
+                    },
+                    yAxis: {
+                        title: {
+                            text: ''
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: false
+                        }
+                    },
+                    series: [{
+                        name: '',
+                        data: countmonth
+                    }]
+                });
+
+
+
+
+            });
+
+            var ctx = document.getElementById('bar_chart').getContext('2d');
+            //var ctx = $("#bar_chart");
+            var bacChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: doctors,
+                    datasets: [{
+                        label: 'Количество пациентов',
+                        data: repArray,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRadio:false,
+                    scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
+                    legend: { display: false },
+                    //title: {
+                    //    display: true,
+                    //    text: "Количество пациентов у доктора"
+                    //},
+                },
+                
+            });
+
+
+        });
+
+        var repArray =@Html.Raw(Json.Encode(ViewBag.Rep));
+        var doctors =@Html.Raw(Json.Encode(ViewBag.Doctors));
+
+
+
+
+
+
+
+
+
+
+
+        </script>
+    }
+
+    @*$.getJSON('../../Home/DashboardChart', function (data) {
+        var names = []
+        var month = []
+        for (var i = 0; i < data.length; i++) {
+            names.push(data[i].Value);
+            month.push(data[i].Key)
+        }*@
+

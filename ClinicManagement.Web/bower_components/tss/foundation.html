@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>Theia Sticky Sidebar | pcvector.net</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet">
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="dist/ResizeSensor.js"></script>
+        <script type="text/javascript" src="dist/theia-sticky-sidebar.js"></script>
+        <script type="text/javascript" src="js/test.js"></script>
+        <style>
+            header, 
+			footer {
+                margin: 20px 0;
+            }
+
+            .columns > div {
+                background: linear-gradient(
+					135deg,
+					rgba(109,179,242,1) 0,
+					rgba(84,163,238,1) 50%,
+					rgba(54,144,240,1) 50%,
+					rgba(30,105,222,1) 100%
+					);
+            }
+        </style>
+    </head>
+    <body>
+	
+		<div class="top-panel-static">
+			<div class="top-panel-inner">
+				<a class="top-panel-back-url" href="http://pcvector.net/scripts/color_picker/474-theia-sticky-sidebar-prilipanie-blokov-pri-skrollirovanii-stranicy.html">
+					<div class="top-panel-logo" title="Назад к статье"></div>
+				</a>
+			</div>
+		</div>
+	
+        <div class="header">
+			<div class="row">
+				<div class="small-12 columns">
+					<h3>Theia Sticky Sidebar - Пример при использовании <a href="http://foundation.zurb.com/">Foundation</a></h3>
+					<button onclick="this.disabled = true; testTheiaStickySidebars();">Запустите тест</button> (Может потребоваться некоторое время. Не прокручивайте и не изменяйте размер окна.)
+					<nav>
+						<ul>
+							<li><a href="index.html">Пример с 3-мя колонками</a></li>
+							<li><a href="4-columns.html">Пример с 4-мя колонками</a></li>
+							<li class="is-active"><a href="foundation.html">Пример при использовании Foundation</a></li>
+							<li><a href="bootstrap-v4.html">Пример при использовании Bootstrap 4</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+        </div>
+        
+        <header>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div style="height: 200px;"></div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="row">
+                <div class="small-3 columns">
+                    <div style="height: 300px;"></div>
+                </div>
+                
+                <div class="small-6 columns">
+                    <div style="height: 1000px;"></div>
+                </div>
+                
+                <div class="small-3 columns">
+                    <div style="height: 800px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div style="height: 400px;"></div>
+                </div>
+            </div>
+        </footer>
+
+        <script>        
+            $(document).ready(function() {
+                $('section .columns').theiaStickySidebar();
+            });
+        </script>
+		
+<!-- pcvector.net -->
+<script type="text/javascript" src="http://pcvector.net/_demo/demo.js"></script>
+<!-- /pcvector.net -->
+    </body>
+</html>

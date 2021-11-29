@@ -1,0 +1,109 @@
+﻿@model ClinicManagement.Web.ViewModel.DoctorFormViewModel
+@{
+    ViewBag.Title = "DoctorForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<div class="row">
+        <div class="col-lg-6">
+            <h1 class="page-header">Доктор</h1>
+        </div>
+
+    </div>*@
+</br>
+<div class="row">
+    <div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Добавить доктора
+            </div>
+            <div class="panel-body">
+                <div class="col-lg-6">
+
+
+                    @*@using (Html.BeginForm("Create", "Tanks", new { RedirectUrl = ViewBag.RedurectUrl }, FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+                    @using (Html.BeginForm("RegisterDoctor", "Account", FormMethod.Post, new { @class = "form-horizontal form-label-left", autocomplete = "off" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+                        //<hr />
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Имя</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Фамилия</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Телефон</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Специализация</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.Specialization, new SelectList(Model.Specializations, "Id", "Name"), "Select", new { @class = "form-control" })
+                              
+                                @Html.ValidationMessageFor(model => model.Specialization)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Адрес</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Email</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.RegisterViewModel.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.RegisterViewModel.Email)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Password</label>
+                            <div class="col-md-10">
+                                @Html.PasswordFor(model => model.RegisterViewModel.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.RegisterViewModel.Password)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Confirm Password</label>
+                            <div class="col-md-10">
+                                @Html.PasswordFor(model => model.RegisterViewModel.ConfirmPassword, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.RegisterViewModel.ConfirmPassword)
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                @*<input type="submit" value="Добавить" class="btn btn-default" />*@
+                                <button type="submit" class="btn btn-success">Добавить</button>
+                                <a href="@Url.Action("Index","Doctor", new{id =Model.Id})" class="btn btn-default">Вернуться</a>
+                            </div>
+                        </div>
+
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ClinicManagement.Web.Models.Attendance>
+@{
+
+    Layout = null;
+}
+<div class="row">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table id="attendance" class="table table-striped table-bordered " style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Token</th>
+                        <th>Name Patient</th>
+                        <th>Clinic Remarks</th>
+                        <th>Diagnosis</th>
+                        <th>Second Diagnosis</th>
+                        <th>Third Diagnosis</th>
+                        <th>Therapy</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Patient.Token</td>
+                            <td>@item.Patient.FirstName @item.Patient.LastName</td>
+                            <td>@item.ClinicRemarks</td>
+                            <td>@item.Diagnosis</td>
+                            <td>@item.SecondDiagnosis</td>
+                            <td>@item.ThirdDiagnosis</td>
+                            <td>@item.Therapy</td>
+                            <td>@item.Date.ToString("MMM"), @item.Date.ToString("d ")-@item.Date.ToString("yyyy")</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+
+        var table = $('#attendance').DataTable({
+            "scrollY": "300px",
+            "scrollCollapse": true,
+            "paging": false,
+            "filter": false,
+            //"info": false,
+            "searching": false,
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+
+        });
+    });
+</script>
+
+ 
+

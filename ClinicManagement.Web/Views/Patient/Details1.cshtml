@@ -1,0 +1,227 @@
+﻿@using ClinicManagement.Web.Models
+@model ClinicManagement.Web.ViewModel.PatientDetailViewModel
+@{
+    ViewBag.Title = "Details";
+}
+<!-- load partial here-->
+<div id="MyModal" class="modal fade in">
+    <div class="modal-dialog " style="width: 900px;">
+        <div class="modal-content">
+            <div id="MyModalContent"></div>
+        </div>
+    </div>
+</div>
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Профиль пациента</h3>
+    </div>
+</div>
+@*style="background-color:greenyellow;"*@
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+
+        <div class="x_panel">
+            <div class="row align-items-center">
+                <div class="col-md-2 col-sm-3 col-xs-12 profile_left ">
+                    <div class="col-auto  profile_img">
+                        <div id="crop-avatar">
+                           
+                            <img class="rounded-circle" src="~/Content/images/user.png">
+                        </div>
+                    </div>
+                    <h3>@Model.Patient.FirstName</h3>
+                    <a href="@Url.Action("Edit", "Patients", new { id= Model.Patient.Id})" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit</a>
+                    <br />
+                </div>
+                @*col ml-md-n2*@
+                @*style="background-color:lavenderblush;"*@
+                <div class="col-md-2 col-sm-3 col-xs-12 profile_info">
+                    <ul class="list-unstyled user_data">
+                        <li> <i class="fa fa-user"><strong>Token:</strong> @Model.Patient.Token</i></li>
+                        <li> <i class="fa fa-user"><strong>Sex:</strong> @Model.Patient.Sex</i></li>
+                        <li> <i class="fa fa-user"><strong>Age:</strong> @Model.Patient.Age</i></li>
+                        <li> <i class="fa fa-user"><strong>Height:</strong> @Model.Patient.Height</i></li>
+                        <li> <i class="fa fa-user"><strong>Weight:</strong> @Model.Patient.Weight</i></li>
+                        <li>
+                            <i class="fa fa-map-marker user-profile-icon"></i><strong>Address:</strong> @Model.Patient.Address
+                        </li>
+                        <li>
+                            <i class="fa fa-phone"></i><strong>Phone:</strong> @Model.Patient.Phone
+                        </li>
+                        <li class="m-top-xs">
+                            <i class="fa fa-clock-o"></i><strong>Date :</strong> @Model.Patient.DateTime.ToString("MMM"), @Model.Patient.DateTime.ToString("d ")- @Model.Patient.DateTime.ToString("yyyy")-@Model.Patient.DateTime.ToString("HH:mm")
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <div class="x_panel">
+            <div class="panel-body">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="#Appointment-pills" data-toggle="tab">История посещений</a>
+                    </li>
+                    <li>
+                        <a href="#profile-pills" data-toggle="tab">Attendance history</a>
+                    </li>
+                    <li>
+                        <a href="#messages-pills" data-toggle="tab">Messages</a>
+                    </li>
+                    <li>
+                        <a href="#settings-pills" data-toggle="tab">Settings</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="Appointment-pills">
+                        <h3>Таблица посещений</h3>
+                        <div class="table-responsive">
+                            <a id="addAppointment" href="#" class="btn btn-success" style="margin-bottom:10px"><i class="fa fa-plus"></i> Записаться к врачу</a>
+                            <table class="table table-striped table-bordered " style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Доктор</th>
+                                        <th>Дата</th>
+                                        <th>Время</th>
+                                        <th>Детали</th>
+                                        <th>Статус</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Appointments)
+                                    {
+                                        <tr>
+                                            <td>@item.Doctor.FirstName</td>
+                                            <td>@item.StartDateTime.ToString("MMM"),@item.StartDateTime.ToString("d ")-@item.StartDateTime.ToString("yyyy")</td>
+                                            <td>@item.StartDateTime.ToString("HH:mm")</td>
+                                            <td>@item.Detail</td>
+                                            <td>
+                                                @{
+                                                    if (item.Status == true)
+                                                    {
+                                                        <a href="#" style="padding: 3px 10px 3px 10px; background-color:green " class="badge" readonly>Посетил</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="#" style="padding: 3px 10px 3px 10px; background-color:yellow " class="badge" readonly>В ожидании</a>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                            <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile-pills">
+                        <h4>Profile Tab</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                    <div class="tab-pane fade" id="messages-pills">
+                        <h4>Messages Tab</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                    <div class="tab-pane fade" id="settings-pills">
+                        <h4>Settings Tab</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#patientID").on("click", function () {
+                var link = $(this);
+                $.ajaxSetup({ cache: false });
+                var detailUrl = "/Appointments/Details/" + link.attr("data-appointment-id");
+                $("#MyModalContent").load(detailUrl, function () {
+                    $("#MyModal").modal({
+                        keyboard: false
+                    }, 'show');
+
+                });
+                return false;
+            });
+            $("#attendanceID").on("click", function () {
+                var link = $(this);
+                $.ajaxSetup({ cache: false });
+                var detailUrl = "/Attendances/Details/" + link.attr("data-attendance-id");
+                $("#MyModalContent").load(detailUrl, function () {
+                    $("#MyModal").modal({
+                        keyboard: false
+                    }, 'show');
+
+                });
+                return false;
+            });
+
+
+        });
+
+        $('.dataTables').DataTable({
+            "scrollY": "300px",
+            "scrollCollapse": true,
+            "paging": false,
+            "filter": false,
+            "info": false
+        });
+    </script>
+
+}
+@*<div class="tab-content">
+        <div class="tab-pane fade show active">
+            <div class="row">
+                <div class="col-lg-12">
+
+
+                    <ul class="list-unstyled user_data">
+                        <li> <i class="fa fa-user"><strong>Token:</strong> @Model.Patient.Token</i></li>
+                        <li> <i class="fa fa-user"><strong>Sex:</strong> @Model.Patient.Sex</i></li>
+                        <li> <i class="fa fa-user"><strong>Age:</strong> @Model.Patient.Age</i></li>
+                        <li> <i class="fa fa-user"><strong>Height:</strong> @Model.Patient.Height</i></li>
+                        <li> <i class="fa fa-user"><strong>Weight:</strong> @Model.Patient.Weight</i></li>
+                        <li>
+                            <i class="fa fa-map-marker user-profile-icon"></i><strong>Address:</strong> @Model.Patient.Address
+                        </li>
+                        <li>
+                            <i class="fa fa-phone"></i><strong>Phone:</strong> @Model.Patient.Phone
+                        </li>
+                        <li class="m-top-xs">
+                            <i class="fa fa-clock-o"></i><strong>Date :</strong> @Model.Patient.DateTime.ToString("MMM"), @Model.Patient.DateTime.ToString("d ")- @Model.Patient.DateTime.ToString("yyyy")-@Model.Patient.DateTime.ToString("HH:mm")
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>*@
+
+@*<div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <span class="section"> Appointment</span>
+            <a id="patientID" data-appointment-id="@Model.Patient.Id" href="#"> Patient Appointment</a>  <span class="badge badge-error">@Model.CountAppointments</span> @if (User.IsInRole(RoleName.AdministratorRoleName))
+            {
+                <a href="@Url.Action("Create", "Appointments", new {id = Model.Patient.Id})"><i class="fa fa-plus"></i></a>
+            }
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <span class="section">Attendance </span>
+            <a id="attendanceID" data-attendance-id="@Model.Patient.Id" href="#"> Lab Attendance </a> <span class="badge badge-error">@Model.CountAttendance</span> <a href="@Url.Action("Create", "Attendances", new { id=Model.Patient.Id})"> <i class="fa fa-plus"></i></a>
+        </div>
+
+    </div>*@
+
+

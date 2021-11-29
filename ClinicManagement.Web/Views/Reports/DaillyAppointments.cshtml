@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ClinicManagement.Web.Models.Appointment>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+</br>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Посещение доктора
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    
+                        <form id="form1">
+                            <label>Выбрать дату:   c </label>
+                            <input type="text" name="getDate" class="datepicker" />
+                            <label>   по </label>
+                            <input type="text" name="getDate2" class="datepicker" />
+                            <input type="button" class="btn btn-primary btn-sm" value="Ok" id="submit" />
+                        </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @*<div class="panel panel-default">*@
+                <div  id="renderTable" class="x_content">
+                    @Html.Partial("_DaillyAppointments")
+                </div>
+            @*</div>*@
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                locale: 'ru'
+            });
+           
+            //$('#daillyAppointments').DataTable({
+            //    "scrollY": "300px",
+            //    "scrollCollapse": true,
+            //    "paging": false,
+            //    "filter": false,
+            //    "info": false,
+            //    "searching": false,
+            //    "ordering": false,
+            //    dom: 'Bfrtip',
+            //    buttons: [
+            //        'copy', 'csv', 'excel', 'pdf', 'print'
+            //    ]
+            //});
+
+            $('#submit').on('click', function () {
+                $('#renderTable').load("Dailly", $('#form1').serialize());
+            });
+        });
+    </script>
+}

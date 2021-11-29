@@ -1,0 +1,19 @@
+﻿Enable-Migrations: Enables the migration in your project by creating a Configuration class.
+Add-Migration: Creates a new migration class as per specified name with the Up() and Down() methods.
+Update-Database: Executes the last migration file created by the Add-Migration command and applies changes to the database schema.
+
+The Enable-Migrations command will create the Configuration class derived from DbMigrationsConfiguration with AutomaticMigrationsEnabled = false.
+
+Now, you need to set the database initializer MigrateDatabaseToLatestVersion in your context class, as shown below.
+
+Enable-Migrations -ContextType ClinicContext -MigrationsDirectory Migrations
+
+add-migration -ConfigurationTypeName ClinicManagement.Web.Migrations.Configuration "InitCreate"
+
+//миграция
+https://docs.microsoft.com/ru-ru/ef/ef6/modeling/code-first/migrations/?redirectedfrom=MSDN
+
+при изменении модели
+Add-Migration RenameColumnNameTableDoctor(название как пример)
+потом
+Update-Database –Verbose(можно без флага –Verbose)

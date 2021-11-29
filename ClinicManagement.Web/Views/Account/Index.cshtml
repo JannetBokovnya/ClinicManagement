@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ClinicManagement.Web.ViewModel.UserViewModel>
+@{
+    ViewBag.Title = "Manage users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="MyModal" class="modal fade in" role="dialog" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div id="MyModalContent"></div>
+        </div>
+    </div>
+</div>
+</br>
+
+<div class="wrapper">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                   Управление пользователями
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table id="users" class="table table-striped table-bordered " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th> <label>Email</label> </th>
+                                    <th><label>Role</label></th>
+                                    <th><label>Account Status</label></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>@item.Role</td>
+                                    <td>
+                                        @{
+                                            //cast to bool
+                                            if ((bool)item.IsActive)
+                                            {
+                                                <a href="#" style="padding: 3px 10px 3px 10px; background-color:green " class="badge" readonly>Active</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" style="padding: 3px 10px 3px 10px; background-color:red " class="badge" readonly>locked</a>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @*<a href="@Url.Action("Edit","Account", new { id = item.Id})" class='btn btn-primary btn-sm'><i class="fa fa-edit">Редактировать</i></a>*@
+                                        <a href="#" data-users-id="@item.Id" class='btn edit btn-primary btn-sm'><i class="fa fa-edit"> Редактировать</i></a>
+                                    </td>
+
+                                </tr>
+                            }
+                        </table>
+                        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+    $(document).ready(function () {
+            var table = $("#users").DataTable();
+        });
+
+        $('a.edit').on('click', function () {
+            var idA = $(this).attr('data-users-id');
+            
+                $.ajaxSetup({ cache: false });
+                var detailUrl = "/Account/Edit/" + idA;
+                $("#MyModalContent").load(detailUrl, function () {
+                    $("#MyModal").modal({
+                        keyboard: false
+                    }, 'show');
+
+                });
+            $('#users').DataTable().ajax.reload;
+
+            return false;
+
+        });
+
+    </script>
+}

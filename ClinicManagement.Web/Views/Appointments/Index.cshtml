@@ -1,0 +1,238 @@
+﻿@model IEnumerable<ClinicManagement.Web.Models.Appointment>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="MyModal" class="modal fade in" role="dialog" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div id="MyModalContent"></div>
+        </div>
+    </div>
+</div>
+
+</br>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Посещение доктора
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        @*<a href="@Url.Action("RegisterDoctor","Account")" class="btn btn-success" style="margin-bottom:10px"><i class="fa fa-plus"></i>Добавить</a>*@
+
+                        <table id="appointments" class="table table-striped table-bordered " style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Token</th>
+                                    <th>Имя пациента</th>
+                                    <th>Телефон</th>
+                                    <th>Дата</th>
+                                    <th>Время</th>
+                                    <th>Доктор</th>
+                                    <th>Детали</th>
+                                    <th>Статус</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Patient.Token</td>
+                                    <td>@item.FullNamePatient</td>
+                                    <td>@item.Patient.Phone</td>
+                                    <td>@item.Date.ToString("MMM")-@item.Date.ToString("d ")-@item.Date.ToString("yyyy")</td>
+                                    <td>@item.Time.ToString("HH:mm")</td>
+                                    <td>@item.FullNameDoctor</td>
+                                    <td>@item.Detail</td>
+                                    <td>
+                                        <div class="status-toggle">
+                                            @{
+
+                                                if (item.Status == true)
+                                                {
+                                                    @*<a href="#" style="padding: 3px 10px 3px 10px; background-color:green " class="badge" readonly>Проведено</a>*@
+                                                    <input type="checkbox" id="status_@item.Id" data-appointments-id="@item.Id" class="check" checked>
+                                                    <label for="status_@item.Id" class="checktoggle">Проведено</label>
+                                                }
+                                                else
+                                                {
+                                                    @*<a href="#" style="padding: 3px 10px 3px 10px; background-color:greenyellow" class="badge" readonly>В ожидании</a>*@
+                                                    <input type="checkbox" id="status_@item.Id" data-appointments-id="@item.Id" class="check">
+                                                    <label for="status_@item.Id" class="checktoggle">В ожидании</label>
+
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+
+
+                                        @*<a  href="#" class="btn btn-primary btn-xs" data-appointments-id="@item.Id" onclick="EditAppointment(@item.Id, )"><i class="fa fa-folder"></i> Редактировать</a>*@
+
+                                        @*<a href="#" class="btn edit btn-primary btn-xs" data-appointments-id="@item.Id" data-return=@item.Status><i class="fa fa-folder"></i> Редактировать</a>*@
+                                        <a href="#" class="btn edit btn-primary btn-sm" data-appointments-id="@item.Id" data-return=@item.Status><i class="fa fa-edit"></i> Редактировать</a>
+                                        @*<a href='/patient/details/ " + patient.id + "' class='btn btn-primary btn-sm' ><i class='fa fa-edit'></i> Просмотр</a>*@
+
+                                        @*@{
+
+                                                if (item.Status == false)
+                                                {
+                                                    <a href="#" class="btn edit btn-primary btn-xs" data-appointments-id="@item.Id" data-return=@item.Status><i class="fa fa-folder"></i> Редактировать</a>
+                                                }
+
+                                            }*@
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </table>
+                        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#appointments').DataTable();
+            $('.check').click(function () {
+                 var url = '@Url.Action("UpdateStatus", "Appointments")';
+                var isChecked = $(this).is(':checked');
+                var idA = $(this).context.getAttribute('data-appointments-id');
+
+                $.post(url, { id: idA, status: isChecked }, function (response) {
+                    if (response) {
+                        //alert("Status changed");
+                        $.notify("Статус изменен", {
+                            globalPosition: "top center",
+                            className: "success"
+                        })
+
+                        setTimeout(function () {
+                            document.location.reload(true);
+                        }, 500);
+                    }
+                })
+                //alert("Status changed =" + isChecked);
+            });
+        });
+
+        $('a.edit').on('click', function () {
+
+            var idA = $(this).attr('data-appointments-id');
+            var statusA = $(this).data('return');
+
+            if (statusA == "True") {
+                $.notify("Нельзя редактировать", {
+                    globalPosition: "top center",
+                    className: "success"
+                })
+            }
+            else {
+                $.ajaxSetup({ cache: false });
+                var detailUrl = "/Appointments/Edit/" + idA;
+                $("#MyModalContent").load(detailUrl, function () {
+                    $("#MyModal").modal({
+                        keyboard: false
+                    }, 'show');
+
+                });
+                $('#appointments').DataTable().ajax.reload;
+
+            }
+
+            return false;
+
+        });
+    </script>
+}
+
+            @*//$("#updateAppointments").on("click", function () {
+            //        var link = $(this);
+            //        $.ajaxSetup({ cache: false });
+            //    var detailUrl = "/Appointments/Edit/" + link.attr("data-appointments-id");
+            //        $("#MyModalContent").load(detailUrl, function () {
+            //            $("#MyModal").modal({
+            //                keyboard: false
+            //            }, 'show');
+
+            //        });
+            //        return false;
+            //});
+       //вариант onclick
+        //var EditAppointment = function (appointmentId) {
+
+        //        $.ajaxSetup({ cache: false });
+        //        var detailUrl = "/Appointments/Edit/" + appointmentId;
+        //        $("#MyModalContent").load(detailUrl, function () {
+        //            $("#MyModal").modal({
+        //                keyboard: false
+        //            }, 'show');
+
+        //        });
+        //    return false;
+        //}
+
+        //при update appointment
+        function SubmitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type: "PUT",
+                    url: form.action,
+                    data: $(form).serialize(),
+                    success: function (data) {
+                        if (data.success) {
+                            $('#MyModal').modal('hide');
+                            //location.reload(true);
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                            setTimeout(function () {
+                                document.location.reload(true);
+                            }, 500);
+
+                        }
+                    }
+                });
+
+            }
+            return false;
+        }
+
+
+            //$('.status-toggle').click(function () {
+
+            //    //if ($(this).attr("checked")) {
+            //    //    $('input[name="name[]"]').attr("checked", "checked");
+            //    //}
+            //    //else {
+            //    //    $('input[name="name[]"]').removeAttr("checked");
+            //    //}
+
+            //    //var isChecked = $('#status_2')[0].is(':checked'); //CheckBox checked - True or false
+            //    //if ($(this).attr("checked") == "checked") {
+            //    //    alert("false");
+            //    //} else {
+            //    //    alert("true");
+            //    //}
+            //    //var id = $(this).data('id'); //Get the id of that specific checked row
+
+            //    //$.post(url, { id: id, status: isChecked }, function (response) {
+            //    //    if (response) {
+            //    //        alert("Status changed");
+            //    //    }
+            //    //})
+            //});*@
+
+

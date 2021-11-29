@@ -1,0 +1,85 @@
+﻿@model ClinicManagement.Web.ViewModel.AppointmentReportViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+</br>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Посещение доктора
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+
+                    <form id="form1">
+                        
+                        <div class="col-sm-2"></div>
+
+                        <div class="col-sm-3">
+                            <label>Выбрать</label><br />
+                            <select name="option" class="form-control">
+                                <option value="">--Select one--</option>
+                                <option value="ThisMonth">Текущий месяц </option>
+                                <option value="Pending">Pending </option>
+                                <option value="Approved">Approved </option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label>Доктор </label>
+                            <select name="doctor" class="form-control">
+                                <option value="">--Select one--</option>
+                                @foreach (var item in Model.Doctors)
+                                {
+                                    <option value=@item.Id> @item.FullNameDoctor </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label></label><br />
+                            <input type="button" class="btn btn-primary" value="Выбрать" id="submit" />
+                            <input type="button" class="btn btn-default" id="showAll" value="Показать все" />
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @*<div class="panel panel-default">*@
+            <div id="renderTable" class="x_content">
+                @Html.Partial("_Appointments")
+            </div>
+            @*</div>*@
+        </div>
+    </div>
+
+</div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                locale: 'ru'
+            });
+
+            $(document).ready(function () {
+                $('#submit').on('click', function () {
+                    $('#renderTable').load("Appointment", $('#form1').serialize());
+                });
+            });
+
+
+            $('#showAll').on('click', function () {
+                location.reload(true);
+            });
+        });
+    </script>
+}

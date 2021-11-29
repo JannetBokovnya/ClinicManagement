@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Attandence";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+</br>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                @*<div class="panel-heading">
+                    Посещение доктора
+                </div>*@
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+
+                    <form id="form1">
+                        <label>Найти пациента по Token: </label>
+                        <input type="text" name="token" />
+                        <input type="button" class="btn btn-primary btn-sm" value="Ok" id="submit" />
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            @*<div class="panel panel-default">*@
+            <div id="renderTable" class="x_content">
+                @Html.Partial("_AttandencePartial")
+            </div>
+            @*</div>*@
+        </div>
+    </div>
+
+</div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                locale: 'ru'
+            });
+
+            $(document).ready(function () {
+                $('#submit').on('click', function () {
+                    $('#renderTable').load("PatientAttandence", $('#form1').serialize());
+                });
+            });
+
+
+           
+        });
+    </script>
+}
