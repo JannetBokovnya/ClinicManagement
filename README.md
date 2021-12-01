@@ -8,4 +8,5 @@ Clinic web application to support requirement which is that patients visit clini
 
 1. ASP.NET MVC (version 5)
 2. Entity Framework
-3. Automapper
+3. Unity
+4. Automapper
